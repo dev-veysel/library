@@ -1,8 +1,12 @@
 package com.library.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -32,4 +36,11 @@ public class User {
 
     @Column(length = 50, nullable = false)
     private String lastName;
+
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"), //#1
+            inverseJoinColumns = @JoinColumn(name = "role_id")) //#2
+    private Set<Role> roles = new HashSet<>();
 }
